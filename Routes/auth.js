@@ -14,6 +14,7 @@ router.get("/" , (req,res) => {
 // @route   POST api/auth
 // @desc    Authorize the User Details & Get the token
 // access   Public
+// done remove it tommorrow
 
 router.post("/" , (req,res) => {
     res.send("Login the User")

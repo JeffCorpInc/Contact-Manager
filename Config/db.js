@@ -20,4 +20,5 @@ const connectDB = () => {mongoose.connect(db, {
     });
 }
 
+
 module.exports = connectDB;
