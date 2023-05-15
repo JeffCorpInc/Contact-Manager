@@ -4,10 +4,12 @@
 const express = require("express");
 const connectDB = require("./Config/db")
 
-connectDB();
-
 // intialize express
 const app = express();
+connectDB();
+
+// init middleware
+app.use(express.json({ extended:false}));
 
 // to make an EndPoint || "Simple API for app level"
 app.get("/" , (req,res) => res.json({msg : "Hello World"}))

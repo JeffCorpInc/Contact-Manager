@@ -6,19 +6,23 @@ const config = require('config');
 const db = config.get("mongoURI")
 
 // connect DB using mongoose
-const connectDB = () => {mongoose.connect(db, {
+const connectDB = async() =>{
+
+    try{
+        await mongoose.connect(db, {
     
-        // to prevent errors intially
-        // userNewUrlParser: true,
-        // useCreatIndex: true,
-        // useFindAndModify: false
-
-    }).then(()=> console.log("Database is connected")).catch(err =>{
-
+            // to prevent errors intially
+            // userNewUrlParser: true,
+            // useCreatIndex: true,
+            // useFindAndModify: false
+    
+        });
+        console.log("Database is connected");
+    }
+    catch(err){
         console.error(err.message);
         process.exit(1);
-    });
+    }
 }
-
 
 module.exports = connectDB;
