@@ -2,11 +2,11 @@
 
 // imports
 const jwt = require("jsonwebtoken");
-const config = require('config')
+const config = require('config');
 
 
 // Auth Middleware checking the token avaialability and verifying it
-module.exports = function(req, res, next){
+module.exports = function (req, res, next){
 
     // get the token
     const token = req.header("x-auth-token");
@@ -14,10 +14,10 @@ module.exports = function(req, res, next){
     // if token doesn't exist
     if(!token){
 
-        return res.status(401).json({msg: "Authentication Denied, Token Missing"})
+        return res.status(401).json({msg: "Authorization Denied, Token Missing"})
     }
 
-   try {
+   try{
     
         // verify token
         const decoded = jwt.verify(token, config.get("jwtSecret"));
@@ -28,6 +28,7 @@ module.exports = function(req, res, next){
 
     } catch (err) {
         
+        console.error(err.message);
         res.status(401).json({msg: "Invalid Token"})
     }
      

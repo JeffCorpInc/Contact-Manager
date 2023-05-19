@@ -35,7 +35,6 @@ router.get("/" , auth, async (req,res) => {
 // @route   POST api/auth
 // @desc    Authorizing the User Details & Get the token | for login
 // access   Public
-// done remove it tommorrow
 
 router.post("/" ,[
     
@@ -48,6 +47,7 @@ router.post("/" ,[
     const errors = validationResult(req);
 
     if(!errors.isEmpty()){
+
         return res.status(400).json({errors: errors.array()})
     }
 
@@ -77,7 +77,7 @@ router.post("/" ,[
         // jwt token create
         jwt.sign(payload, config.get('jwtSecret'), {
             
-                expiresIn: 3600000
+                expiresIn: 360000
 
             }, (err,token)=>{
 

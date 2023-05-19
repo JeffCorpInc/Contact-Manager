@@ -77,8 +77,48 @@ router.post("/" ,[ auth , [
 // @desc    Update the existing contacts
 // access   Private
 
-router.put("/:id" , (req,res) => {
-    res.send("Update the existing contacts")
+router.put("/:id", auth , async (req,res) => {
+
+    const { name,phone,email,type} = req.body;
+
+    // data stored in contactField
+    const contactFields = {} 
+
+    // if fields has Data
+    if(name) contactFields.name = name;
+    if(email) contactFields.email = email;
+    if(phone) contactFields.phone = phone;
+    if(type) contactFields.type = type;
+
+    try {
+        
+        // DB contacts store in contact var | Checkin contact in DB
+        let contact = await Contact.findById(req.params.id)
+
+        // if !contact exists
+        if (!contact) return res.status(404).json({msg:"This contact doesn't exist."});
+
+        // if conact exists, make sure currently signed in user owns the contact
+        if(contact.user.toString() !== req.user.id ){
+            return res.status(401).json({msg: "You don't have the Access to Update"})
+        } 
+
+        // update contact 
+        contact = await Contact.findByIdAndUpdate(req.params.id, 
+            
+            // to update keys stored in contactFields var | create new contact in DB
+            { $set: contactFields },
+            { new: true }
+        );
+
+        // return updated contact 
+        res.json(contact)
+
+    } catch (err) {   
+        
+        console.error(err.message);
+        res.status(500).send({msg:"Server Error"})
+    }
 })
 
 
@@ -86,8 +126,33 @@ router.put("/:id" , (req,res) => {
 // @desc    Delete the contacts
 // access   Private
 
-router.delete("/:id" , (req,res) => {
-    res.send("Delete the contacts")
+router.delete("/:id", auth , async (req,res) => {
+
+    try {
+        
+        // DB contacts store in contact var | Checkin contact in DB
+        let contact = await Contact.findById(req.params.id)
+
+        // if !contact exists
+        if (!contact) return res.status(404).json({msg:"This contact doesn't exist."});
+
+        // if conact exists, make sure currently signed in user owns the contact
+        if(contact.user.toString() !== req.user.id ){
+            return res.status(401).json({msg: "You don't have the Access to Update"})
+        } 
+
+        // Delete Contact from DB
+        await Contact.findByIdAndRemove(req.params.id);
+
+        // return updated contact 
+        res.json({msg: 'The Contact Has Been Deleted'})
+
+    } catch (err) {   
+        
+        console.error(err.message);
+        res.status(500).send({msg:"Server Error"})
+    }
+
 })
 
 module.exports = router;
