@@ -1,14 +1,36 @@
+// Main Application
+
+// imports
+import React, { Fragment } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './Components/Layout/Navbar';
+import Home from "./Components/Pages/Home";
+import About from "./Components/Pages/About";
+
 import './App.css';
+
+
 
 const App = () => {
   return (
     
-    <div className="app">
+    <Router>
+      <Fragment>
 
-      Contact Management App
-        
-    </div>
+        <Navbar />
 
+        <div className="container">
+
+          {/* Pages */}
+          <Routes>
+            <Route exact path='/' Component={Home} />
+            <Route exact path='/about' Component={About} />
+          </Routes>
+
+        </div>
+
+      </Fragment>
+    </Router>
   );
 }
 
