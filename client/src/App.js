@@ -3,6 +3,7 @@
 // imports
 import React, { Fragment } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ContactState from './Context/Contact/ContactState';
 import Navbar from './Components/Layout/Navbar';
 import Home from "./Components/Pages/Home";
 import About from "./Components/Pages/About";
@@ -13,7 +14,7 @@ import './App.css';
 
 const App = () => {
   return (
-    
+    <ContactState>
     <Router>
       <Fragment>
 
@@ -31,6 +32,7 @@ const App = () => {
 
       </Fragment>
     </Router>
+    </ContactState>
   );
 }
 
