@@ -1,14 +1,32 @@
 // This component contain information which is inside the "conact" coponent
 
 // imports
-import React from 'react'
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
-
-
+import ContactContext from '../../Context/Contact/contactContext';
 
 const ContactItems = ({Contact}) => {
 
-  const { name, email, phone, type } = Contact;
+  // ContactContext initialize   
+  const contactContext = useContext(ContactContext);
+
+  // destructure deleteContact from global state
+  const {deleteContact, setCurrent, clearCurrent} = contactContext;
+
+  const { id, name, email, phone, type } = Contact;
+
+  // onDelete Function to remove contact 
+  const onDelete = () => {
+    
+    deleteContact(id);
+    clearCurrent();
+  }
+
+  // onDelete Function to remove contact 
+  const onEdit = () => {
+
+    setCurrent(Contact);
+  }
 
   return (
 
@@ -36,8 +54,8 @@ const ContactItems = ({Contact}) => {
         </ul>
 
         <p>
-            <button className='btn btn-dark btn-sm'> Edit</button>
-            <button className="btn btn-danger btn-sm">Delete</button>
+            <button className='btn btn-dark btn-sm' onClick={onEdit}> Edit</button>
+            <button className="btn btn-danger btn-sm" onClick={onDelete}>Delete</button>
         </p>
 
     </div>
