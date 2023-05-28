@@ -4,7 +4,7 @@
 import React from "react";
 import Contacts from "../Contacts/Contact";
 import ContactForm from "../Contacts/ContactForm";
-
+import ContactFilter from "../Contacts/ContactFilter"
 
 const Home = () => {
 
@@ -17,6 +17,7 @@ const Home = () => {
       </div>
 
       <div>
+        <ContactFilter/>
         <Contacts />
       </div>
 

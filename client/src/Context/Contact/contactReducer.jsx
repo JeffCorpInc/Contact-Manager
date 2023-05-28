@@ -45,6 +45,28 @@ const Reducer = (state,action) => {
                 contacts: state.contacts.map( contact => contact.id === action.payload.id ? action.payload : contact )
             }
 
+        // Filter Contact
+        case FILTER_CONTACT:
+            return{
+                ...state,
+                filtered: state.contacts.filter( contact => {
+
+                    // regular expression | regex me search input ka payload agaya
+                    const regex = new RegExp( `${action.payload}` , 'gi' );
+
+                    // either payload contact.name ya contact.email se match kare
+                    return contact.name.match(regex) || contact.email.match(regex);
+                })
+            }
+
+        // Clear Contact
+        case CLEAR_FILTER:
+            return{
+                ...state,
+                filtered: null
+            }
+
+
         default:
             return state;
     }

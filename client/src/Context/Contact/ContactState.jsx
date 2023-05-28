@@ -23,12 +23,15 @@ const ContactState = props => {
     // hardCode Contacts
     const initialState = {
         contacts:[],
-        current:null
+        current:null,
+        filtered: null
     };
 
     const [state,dispatch] = useReducer(contactReducer, initialState);
 
+
     // ACTIONS
+
     // 1 Add Contact
     const addContact = Contact =>{
 
@@ -58,17 +61,28 @@ const ContactState = props => {
 
         dispatch({ type: UPDATE_CONTACT, payload: contact })
     }
+
     // 6 Filter Contact
+    const filterContacts = (text) => {
+        dispatch({ type: FILTER_CONTACT, payload: text })
+    }
 
     // 7 Clear Filter
+    const clearFilter = () => {
+        dispatch({ type: CLEAR_FILTER })
+    }
 
 
     return(
+
+        // yaha ham isliye add kar rhe hein har function ko take wo 
+        // contactContext me chala gae or contactContext ko import krke ye functions use karsake.
         <contactContext.Provider
             value={{
                 contacts: state.contacts,
                 current: state.current,
-                addContact,deleteContact,setCurrent,clearCurrent,updateContact
+                filtered: state.filtered,
+                addContact,deleteContact,setCurrent,clearCurrent,updateContact,filterContacts,clearFilter
             }}
         >
             {props.children}

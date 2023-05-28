@@ -11,15 +11,29 @@ import ContactItems from "./ContactItems";
 const Contacts = ()=>{
 
     const contactContext = useContext(ContactContext);
-    const { contacts } = contactContext;
+    const { contacts, filtered } = contactContext;
+
+    // if there is no contact on display
+    if(contacts.length === 0){
+        return <h4>
+            Please add a Contact
+        </h4>
+    };
 
     return (
         <Fragment>
-            {contacts.map( contact => (
+
+        {
+            filtered !== null ? filtered.map( contact => (
 
                 <ContactItems key={contact.id} Contact={contact} />
+            )) :
+            contacts.map( contact => (
 
-            ))}
+                <ContactItems key={contact.id} Contact={contact} />
+            ))
+        }
+
         </Fragment>
     )
 }
