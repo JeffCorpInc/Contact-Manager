@@ -5,6 +5,8 @@ import { useReducer } from "react";
 import authContext from "./authContext";
 import authReducer from "./authReducer";
 import axios from 'axios';
+import setAuthToken from '../../Utils/setAuthToken';
+
 
 import{
     REGISTER_SUCCESS,
@@ -16,8 +18,6 @@ import{
     LOGOUT,
     CLEAR_ERROR
 } from "../types";
-
-
 
 
 const AuthState = props => {
@@ -37,6 +37,27 @@ const AuthState = props => {
     // ACTIONS
 
     // 0 Load user - check which user is login
+    const loadUser = async () => {
+
+        // load tokent into a global header
+        if(localStorage.token){
+
+            setAuthToken(localStorage.token);
+        }
+
+        // checking user details via API
+        try {
+            
+            // if auth is passed
+            const res = await axios.get('/api/auth');
+            dispatch({ type: USER_LOADED, payload: res.data })
+
+        } catch (err) {
+        
+            // if the auth is failed
+            dispatch({ type: AUTH_ERROR })
+        }
+    }
 
 
     // 1 Register user - user signup and get token
@@ -55,6 +76,8 @@ const AuthState = props => {
 
             // data will be token 
             dispatch({ type: REGISTER_SUCCESS, payload: res.data })
+
+            loadUser();
         } 
         catch (err) {
             
@@ -64,9 +87,34 @@ const AuthState = props => {
     }
 
     // 2 login user - get the token on login
+    const login = async formData => {
+
+        // config me headers me content type batae ge - json
+        const config = {
+            headers: {
+                'Content-Type': 'application/json' 
+            }
+        }
+        try {
+
+            // we'll catch response from the post method ,,  // endpoint | data | config
+            const res = await axios.post('/api/auth', formData, config)
+
+            // data will be token 
+            dispatch({ type: LOGIN_SUCCESS, payload: res.data })
+
+            loadUser();
+        } 
+        catch (err) {
+            
+            // agr registeration fail hogae
+            dispatch({ type: LOGIN_FAIL , payload: err.response.data.msg })
+        }
+    }
 
 
     // 3 logout user - logout and token destroyed
+    const logout = () => dispatch({ type: LOGOUT })
 
 
     // 4 clear errors
@@ -86,7 +134,7 @@ const AuthState = props => {
                 loading: state.loading,
                 user: state.user,
                 error: state.error,
-                register, clearErrors
+                register, clearErrors, loadUser, login, logout
             }}
         >
             {props.children}

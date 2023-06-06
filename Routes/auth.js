@@ -59,7 +59,7 @@ router.post("/" ,[
         // find Email in DB
         let user = await User.findOne({email});
         if(!user){
-            return res.status(400).json({msg : "A User with this Email doesn't Exist."})
+            return res.status(400).json({msg : "A User with this Email doesn't Exist"})
         }
 
         const isMatch = await bcrypt.compare(password,user.password);

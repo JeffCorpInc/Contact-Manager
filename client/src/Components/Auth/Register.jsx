@@ -1,27 +1,38 @@
 import React, { useState, useContext, useEffect} from 'react';
 import AlertContext from '../../Context/Alert/alertContext'
 import AuthContext from '../../Context/Auth/authContext';
+import { useNavigate } from 'react-router-dom';
 
 
-const Register = () => {
+
+const Register = (props) => {
 
   // Initializing  
   const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
+  const navigate = useNavigate();
 
   // destructuring
   const {setAlert} = alertContext;
-  const { register, error, clearErrors  } = authContext;
+  const { register, error, clearErrors, isAuthenticated } = authContext;
 
   // display email overwrite error
   useEffect(()=>{
 
-    if(error === 'A User with this email is already exists.'){
+    // isAuthenticated is true then redirect page to home
+    if(isAuthenticated) {
+
+      navigate('/');
+    }
+
+    if(error === "A User with this email is already exists."){
 
       setAlert(error,'danger')
       clearErrors();
     }
-  }, [error])
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[error, isAuthenticated, navigate])
 
   const [user, setUser] = useState({
 
@@ -97,4 +108,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default Register;

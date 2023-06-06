@@ -12,10 +12,16 @@ import Home from "./Components/Pages/Home";
 import About from "./Components/Pages/About";
 import Register from './Components/Auth/Register';
 import Login from './Components/Auth/Login';
-
-
+import setAuthToken from './Utils/setAuthToken';
+import PrivateRoutes from './Components/Routing/PrivateRoutes';
 import './App.css';
 
+
+// agr token he to axios ke defaults header me store kardenge 
+if(localStorage.token) {
+            
+  setAuthToken(localStorage.token);
+};
 
 
 const App = () => {
@@ -34,10 +40,14 @@ const App = () => {
 
           {/* Pages */}
           <Routes>
-            <Route exact path='/' Component={Home} />
+
+            <Route Component={PrivateRoutes}>
+              <Route exact path='/' Component={Home} /> 
+            </Route>
             <Route exact path='/about' Component={About} />
             <Route exact path='/register' Component={Register} />
             <Route exact path='/login' Component={Login} />
+
           </Routes>
 
         </div>
@@ -47,7 +57,6 @@ const App = () => {
     </AlertState>
     </ContactState>
     </AuthState>
-    
   );
 }
 

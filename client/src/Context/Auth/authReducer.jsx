@@ -12,8 +12,18 @@ import{
 const Reducer = (state,action) => {
     switch(action.type){
 
-        // Register User
+        // Load User / Auth
+        case USER_LOADED:
+            return{
+                ...state,
+                isAuthenticated: true,
+                loading: false,
+                user: action.payload
+            }
+
+        // Register Success / Login Success
         case REGISTER_SUCCESS:
+        case LOGIN_SUCCESS:
         localStorage.setItem('token', action.payload.token);
         return{
             ...state,
@@ -22,8 +32,11 @@ const Reducer = (state,action) => {
             loading: false
         }
 
-        // Register User Fail
+        // Register User Fail / Auth Error / login Fail / logout  | Removing token
         case REGISTER_FAIL:
+        case AUTH_ERROR:
+        case LOGIN_FAIL:
+        case LOGOUT:
         localStorage.removeItem('token');
         return{
             ...state,

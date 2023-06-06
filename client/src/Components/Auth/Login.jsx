@@ -1,6 +1,39 @@
-import React, { useState } from 'react'
+
+// imports
+import React, { useContext, useEffect, useState } from 'react'
+import AuthContext from '../../Context/Auth/authContext';
+import AlertContext from '../../Context/Alert/alertContext';
+import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
+
+  // initialize
+  const authContext = useContext(AuthContext);
+  const alertContext = useContext(AlertContext);
+  const navigate = useNavigate();
+
+
+  // destructuring
+  const {setAlert} = alertContext;
+  const { login, error, clearErrors, isAuthenticated } = authContext;
+
+  useEffect(()=>{
+
+    // isAuthenticated is true then redirect page to home
+    if(isAuthenticated){
+
+      navigate('/');
+    }
+
+    if(error === 'Incorrect Password'){
+
+      setAlert(error,'danger')
+      clearErrors();
+    }
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[error, isAuthenticated, navigate])
 
   const [user, setUser] = useState({
     email: '',
@@ -19,7 +52,15 @@ const Login = () => {
     
     // prevent loading
     e.preventDefault();
-    console.log("User Logged In");
+    
+    // if the credentials are empty
+    if(email === '' || password === '') {
+      
+      setAlert('Please enter Credentials' , 'danger')
+    }
+    else{
+      login({email,password})
+    }
   }
 
   return (
