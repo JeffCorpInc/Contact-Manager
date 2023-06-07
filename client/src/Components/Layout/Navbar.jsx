@@ -5,20 +5,25 @@ import React, { Fragment, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 import AuthContext from '../../Context/Auth/authContext';
+import ContactContext from '../../Context/Contact/contactContext';
+
 
 
 const Navbar = ({ title,icon }) => {
 
   // initialize
   const authContext = useContext(AuthContext);
+  const contactContext = useContext(ContactContext);
 
   // destructuring
   const { isAuthenticated, logout, user } = authContext;
+  const { clearContacts } = contactContext;
 
   // logout function
   const onLogout =()=> {
 
-    logout()
+    logout();
+    clearContacts();
   }
     
   // when user is on home page after register/login

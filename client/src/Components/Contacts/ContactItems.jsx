@@ -13,12 +13,12 @@ const ContactItems = ({Contact}) => {
   // destructure deleteContact from global state
   const {deleteContact, setCurrent, clearCurrent} = contactContext;
 
-  const { id, name, email, phone, type } = Contact;
+  const { _id, name, email, phone, type } = Contact;
 
   // onDelete Function to remove contact 
   const onDelete = () => {
     
-    deleteContact(id);
+    deleteContact(_id);
     clearCurrent();
   }
 
