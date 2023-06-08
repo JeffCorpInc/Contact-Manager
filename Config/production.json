@@ -1,5 +1,4 @@
 {
     "mongoURI":"mongodb+srv://mhd:NaEE8mvew2AmZG2@contactmanager.kmbzekb.mongodb.net/test",
-    "jwtSecret": "secret"
-    
+    "jwtSecret": "secret"  
 }
